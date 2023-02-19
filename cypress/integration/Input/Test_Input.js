@@ -21,7 +21,6 @@ describe('My Second Test Site', () => {
         cy.wrap($el).click();
       }
     });
-
     cy.get('#autocomplete').should('have.value', 'Indonesia');
 
     cy.get('#displayed-text').should('be.visible');
