@@ -12,7 +12,7 @@ describe('My Second Test Site', () => {
   });
 
   it('My first test case', function () {
-    let sum = 0;
+    
     const homePage = new HomePage();
     const productPage = new ProductsPage();
     cy.visit(`${Cypress.env('url')}/angularpractice/`);
@@ -26,7 +26,7 @@ describe('My Second Test Site', () => {
     this.data.productName.forEach((val) => {
       cy.selectProduct(val);
     });
-
+    let sum = 0;
     productPage.getCheckoutButton().click();
     cy.get('tr td:nth-child(4) strong')
       .each(($el, index, $list) => {

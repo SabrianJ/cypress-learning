@@ -6,12 +6,25 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "cypress-open": "./node_modules/.bin/cypress open",
-    "cypress-run": "./node_modules/.bin/cypress run"
+    "cypress-run": "./node_modules/.bin/cypress run",
+    "cypress-run-headed": "npm run cypress-run -- --headed",
+    "cypress-regression": "npx cypress run --env tags=\"@Regression\" --headed  "
+  },
+  "cypress-cucumber-preprocessor": {
+    "json": {
+      "enabled": true,
+      "output": "cypress/cucumberReports/results.json"
+    }
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "cypress": "^12.5.1",
-    "cypress-iframe": "^1.0.1"
+    "cypress-iframe": "^1.0.1",
+    "multiple-cucumber-html-reporter": "^3.2.0"
+  },
+  "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^15.1.4",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0"
   }
 }
