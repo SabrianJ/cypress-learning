@@ -1,6 +1,7 @@
 /// <reference types="Cypress" />
 /// <references types="cypress-iframe" />
 import 'cypress-iframe';
+import neatCsv from 'neat-csv';
 
 describe('My Second Test Site', () => {
   it('My first test case', () => {
@@ -45,5 +46,35 @@ describe('My Second Test Site', () => {
     cy.wait('@getOneBook').then(({ req, response }) => {
       cy.get('tr').should('have.length', 1);
     });
+  });
+
+  it('logged in into local storage', () => {
+    cy.login().then(() => {
+      cy.visit('https://rahulshettyacademy.com/client', {
+        onBeforeLoad(win) {
+          win.localStorage.setItem('token', Cypress.env('token'));
+        },
+      });
+    });
+
+    cy.get('.card-body button:last-of-type').eq(1).click({ force: true });
+    cy.get('[routerlink*="cart"]').click();
+    cy.contains('Checkout').click();
+    cy.get('[placeholder*="Select Country"]').type('Indonesia');
+    cy.get('.ta-results button').each(($el, index, list) => {
+      if ($el.text().includes('Indonesia')) {
+        cy.wrap($el).click();
+      }
+    });
+    cy.get('.action__submit').click();
+    cy.wait(4000);
+    cy.get('.order-summary button').click();
+
+    cy.readFile(Cypress.config("fileServerFolder") + "cypress\downloads\order-invoice_rahulshetty.csv").then(
+      async (text) => {
+        const csv = await neatCsv(text);
+        cy.log(csv);
+      }
+    );
   });
 });
